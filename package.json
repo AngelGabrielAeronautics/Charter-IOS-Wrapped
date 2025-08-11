@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"No tests for wrapper\"",
+    "type-check": "tsc --noEmit",
     "cap:sync": "npx cap sync",
     "cap:open:ios": "npx cap open ios",
     "cap:open:android": "npx cap open android",
