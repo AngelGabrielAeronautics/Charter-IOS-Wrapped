@@ -13,7 +13,7 @@
         navigator.serviceWorker.register('/sw.js').catch(() => {});
       }
 
-      // window.open → InAppBrowser fallback for Capacitor Browser plugin
+      // window.open → InAppBrowser fallback for Capacitor Browser plugin (test env allowed)
       (function(){
         const originalOpen = window.open;
         window.open = function(url, target, features){

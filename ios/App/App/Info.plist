@@ -46,11 +46,20 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
 	
+	<!-- File upload camera/gallery permissions -->
+	<key>NSCameraUsageDescription</key>
+	<string>Allow Charter to use your camera for file uploads.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Allow Charter to access your photos for uploads.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Allow Charter to save images to your photo library.</string>
+	
 	<!-- Universal Links for chartermarket.app -->
 	<key>com.apple.developer.associated-domains</key>
 	<array>
 		<string>applinks:chartermarket.app</string>
 		<string>applinks:www.chartermarket.app</string>
+		<string>applinks:charter-market.vercel.app</string>
 	</array>
 
 	<!-- Custom URL scheme charter:// -->

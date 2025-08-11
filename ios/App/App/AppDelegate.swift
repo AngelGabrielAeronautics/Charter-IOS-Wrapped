@@ -9,34 +9,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        if let bridge = ApplicationDelegateProxy.shared.bridge,
-           let webView = bridge.webView as? WKWebView {
+        if let rootVC = self.window?.rootViewController as? CAPBridgeViewController,
+           let webView = rootVC.webView {
             webView.navigationDelegate = self
             webView.uiDelegate = self
 
             // Add native share button overlay
-            if let rootVC = bridge.viewController {
-                let shareButton = UIButton(type: .system)
-                shareButton.translatesAutoresizingMaskIntoConstraints = false
-                if #available(iOS 13.0, *) {
-                    let image = UIImage(systemName: "square.and.arrow.up")
-                    shareButton.setImage(image, for: .normal)
-                    shareButton.tintColor = .white
-                    shareButton.backgroundColor = UIColor(white: 0, alpha: 0.6)
-                    shareButton.layer.cornerRadius = 22
-                } else {
-                    shareButton.setTitle("Share", for: .normal)
-                }
-                shareButton.addTarget(self, action: #selector(shareCurrentPage), for: .touchUpInside)
-                rootVC.view.addSubview(shareButton)
-
-                NSLayoutConstraint.activate([
-                    shareButton.widthAnchor.constraint(equalToConstant: 44),
-                    shareButton.heightAnchor.constraint(equalToConstant: 44),
-                    shareButton.trailingAnchor.constraint(equalTo: rootVC.view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-                    shareButton.bottomAnchor.constraint(equalTo: rootVC.view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
-                ])
+            let shareButton = UIButton(type: .system)
+            shareButton.translatesAutoresizingMaskIntoConstraints = false
+            if #available(iOS 13.0, *) {
+                let image = UIImage(systemName: "square.and.arrow.up")
+                shareButton.setImage(image, for: .normal)
+                shareButton.tintColor = .white
+                shareButton.backgroundColor = UIColor(white: 0, alpha: 0.6)
+                shareButton.layer.cornerRadius = 22
+            } else {
+                shareButton.setTitle("Share", for: .normal)
             }
+            shareButton.addTarget(self, action: #selector(shareCurrentPage), for: .touchUpInside)
+            rootVC.view.addSubview(shareButton)
+
+            NSLayoutConstraint.activate([
+                shareButton.widthAnchor.constraint(equalToConstant: 44),
+                shareButton.heightAnchor.constraint(equalToConstant: 44),
+                shareButton.trailingAnchor.constraint(equalTo: rootVC.view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+                shareButton.bottomAnchor.constraint(equalTo: rootVC.view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            ])
         }
         return true
     }
@@ -105,9 +103,10 @@ extension AppDelegate: WKUIDelegate {
     func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
         // Handle window.open / target=_blank by showing SFSafariViewController
         if navigationAction.targetFrame == nil || !(navigationAction.targetFrame?.isMainFrame ?? true) {
-            if let url = navigationAction.request.url {
+            if let url = navigationAction.request.url,
+               let rootVC = self.window?.rootViewController {
                 let safari = SFSafariViewController(url: url)
-                ApplicationDelegateProxy.shared.bridge?.viewController?.present(safari, animated: true)
+                rootVC.present(safari, animated: true)
             }
             return nil
         }
@@ -117,16 +116,14 @@ extension AppDelegate: WKUIDelegate {
 
 extension AppDelegate {
     @objc func shareCurrentPage() {
-        guard let bridge = ApplicationDelegateProxy.shared.bridge,
-              let webView = bridge.webView as? WKWebView else { return }
-        let url = webView.url?.absoluteString ?? "https://chartermarket.app"
+        guard let rootVC = self.window?.rootViewController as? CAPBridgeViewController,
+              let webView = rootVC.webView else { return }
+        let url = webView.url?.absoluteString ?? "https://charter-market.vercel.app"
         let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
-        if let rootVC = bridge.viewController {
-            if let popover = activityVC.popoverPresentationController {
-                popover.sourceView = rootVC.view
-                popover.sourceRect = CGRect(x: rootVC.view.bounds.width - 40, y: rootVC.view.bounds.height - 40, width: 1, height: 1)
-            }
-            rootVC.present(activityVC, animated: true)
+        if let popover = activityVC.popoverPresentationController {
+            popover.sourceView = rootVC.view
+            popover.sourceRect = CGRect(x: rootVC.view.bounds.width - 40, y: rootVC.view.bounds.height - 40, width: 1, height: 1)
         }
+        rootVC.present(activityVC, animated: true)
     }
 }

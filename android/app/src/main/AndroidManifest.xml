@@ -29,6 +29,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="https" android:host="chartermarket.app" />
                 <data android:scheme="https" android:host="www.chartermarket.app" />
+                <data android:scheme="https" android:host="charter-market.vercel.app" />
             </intent-filter>
 
             <!-- Deep links: custom scheme charter:// -->
@@ -55,4 +56,5 @@
     <!-- Permissions -->
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 </manifest>

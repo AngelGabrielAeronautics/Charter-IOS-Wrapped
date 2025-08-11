@@ -1,0 +1,42 @@
+# macOS
+.DS_Store
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Capacitor generated copies
+android/app/src/main/assets/public/
+android/app/src/main/assets/capacitor.config.json
+android/app/src/main/assets/capacitor.plugins.json
+ios/App/App/public/
+ios/App/App/capacitor.config.json
+
+# iOS
+ios/Pods/
+ios/DerivedData/
+ios/**/xcuserdata/
+ios/**/build/
+
+# Android
+android/.gradle/
+android/.idea/
+android/local.properties
+android/build/
+android/app/build/
+android/app/release/
+android/capacitor-cordova-android-plugins/build/
+
+# Xcode
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+*.xcuserstate
+
+# Others
+.tmp/
+.env*
+
+

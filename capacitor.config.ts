@@ -5,10 +5,14 @@ const config: CapacitorConfig = {
   appName: 'Charter',
   webDir: 'www',
   server: {
-    // Load the production web app directly
-    url: 'https://chartermarket.app',
+    // Load the test web app directly
+    url: 'https://charter-market.vercel.app',
     cleartext: false,
-    allowNavigation: ['chartermarket.app', '*.chartermarket.app'],
+    allowNavigation: [
+      'chartermarket.app',
+      '*.chartermarket.app',
+      'charter-market.vercel.app'
+    ],
   },
   ios: {
     allowsLinkPreview: false,
