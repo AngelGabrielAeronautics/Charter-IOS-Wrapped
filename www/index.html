@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Charter</title>
+    <meta name="theme-color" content="#1A2B3C" />
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js').catch(() => {});
+      }
+
+      // window.open → InAppBrowser fallback for Capacitor Browser plugin
+      (function(){
+        const originalOpen = window.open;
+        window.open = function(url, target, features){
+          try { if (window.Capacitor?.Plugins?.Browser?.open) { window.Capacitor.Plugins.Browser.open({ url }); return null; } } catch(e) {}
+          return originalOpen.apply(window, [url, target, features]);
+        }
+      })();
+
+      // Add native share action if available
+      window.shareCurrent = async function(title, url){
+        try { if (window.Capacitor?.Plugins?.Share?.share) { await window.Capacitor.Plugins.Share.share({ title, url }); } }
+        catch(e) { /* ignore */ }
+      }
+    </script>
+  </body>
+  </html>
+
+
